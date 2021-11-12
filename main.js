@@ -3,7 +3,7 @@ import './style.css'
 // 1. En una variable llamada holes, guardar todos los elementos de tipo .hole
 const scoreBoard = document.querySelector('.score-value');
 const bugs = document.querySelectorAll('.bug');
-
+const holes = document.querySelectorAll('.hole')
 let lastHole;
 let timeUp = false;
 let score = 0;
