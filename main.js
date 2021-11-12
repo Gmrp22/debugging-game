@@ -1,8 +1,12 @@
-import './style.css'
+import "./style.css";
 
 // 1. En una variable llamada holes, guardar todos los elementos de tipo .hole
-const scoreBoard = document.querySelector('.score-value');
-const bugs = document.querySelectorAll('.bug');
+const scoreBoard = document.querySelector(".score-value");
+
+const bugs = document.querySelectorAll(".bug");
+
+//Variable para holes
+const holes = document.querySelectorAll(".hole");
 
 let lastHole;
 let timeUp = false;
@@ -22,45 +26,52 @@ function agujeroRandom(holes) {
   if (lastHole === hole) {
     return agujeroRandom(holes);
   }
-  
-  lastHole = hole;
-  return hole
-}
 
+  lastHole = hole;
+  return hole;
+}
 
 // Hace que un nuevo bug salte desde un agujero
 function saltar() {
-  const time = tiempoRandom(500, 3000);
+  const time = tiempoRandom(500, 2000);
   const hole = agujeroRandom(holes);
-
+  //Obtengo un bug aleatorio para poder y mostrando diferentes
+  let numeroBug = Math.floor(Math.random() * (8 - 1)) + 1;
+  const bugSelector = `div[data-bug="${numeroBug}"]`;
+  const bug = document.querySelector(bugSelector);
   // 2. Agregar la clase 'up' al elemento 'hole' para que el bug aparezca
+  bug.classList.add("up");
   setTimeout(() => {
     // 3. Eliminar la clase 'up' para que el bug desaparezca
-
+    bug.classList.remove("up");
     // Hace que un nuevo bug salte desde un agujero si el tiempo no ha terminado
     if (!timeUp) saltar();
-  }, time)
+  }, time);
 }
 
 // Maneja el evento de click en un bug
 function golpear(event) {
-  console.log('boing!!')
+  console.log("boing!!");
   if (!event.isTrusted) return; // Alguien intentó hacer trampa
-
   score++;
   scoreBoard.textContent = score;
 }
-
+//Modifique la funcion para que incie el juego
 function iniciarJuego() {
   scoreBoard.textContent = 0;
   timeUp = false;
 
   saltar();
 
-  setTimeout(() => timeUp = true, 10 * 1000);
+  setTimeout(() => (timeUp = true), 10 * 1000);
 }
 
-
 // 4. Agregar el evento 'click' al todos los elementos 'bug'
-
+//Agregue un event para cuando se haga clicke un bug
+bugs.forEach((bug) => {
+  bug.addEventListener("click", golpear);
+});
 // 5. Hacer un bind del evento click del boton iniciar juego
+//Variable para poder iniciar juego y un evento para realizarlo
+const start = document.querySelector("#start");
+start.addEventListener("click", iniciarJuego);
